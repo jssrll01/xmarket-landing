@@ -1,258 +1,287 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
-  ArrowRight, Zap, Wallet, ShieldCheck, Truck, Gift, Headphones,
-  CheckCircle2, Star, ChevronDown,
-} from 'lucide-react';
+  Search, ShoppingBag, Wallet, ShieldCheck, Truck, BadgeCheck, Zap, Store,
+  Smartphone, Shirt, Gamepad2, Home, Sparkles, Headphones, Gift, ChevronDown,
+  Menu, X, ArrowRight, Download, Tag, Percent, Package, Laptop, Baby, Utensils,
+  Heart, Coins,
+} from "lucide-react";
+import { useParallax } from "./useParallax.js";
 
-const APP_URL = 'https://xmarket-app.onrender.com';
+// EDIT THIS: the URL of your main XMARKET app
+const APP_URL = "https://xmarket.onrender.com";
 
-const FEATURES = [
-  { icon: Zap,         color: '#2563EB', title: 'Instant checkout',  desc: 'One-tap purchases with saved addresses and preferred payment methods.' },
-  { icon: Wallet,      color: '#10B981', title: 'Xwallet built-in',  desc: 'Top-up once, spend anywhere. No need for a bank card every time.' },
-  { icon: ShieldCheck, color: '#7C3AED', title: 'Verified sellers',  desc: 'Only KYC-approved sellers with real identities can list products.' },
-  { icon: Truck,       color: '#F59E0B', title: 'Fast delivery',     desc: 'Same-day and next-day delivery for selected areas via Lalamove.' },
-  { icon: Gift,        color: '#EC4899', title: 'Loyalty rewards',   desc: 'Earn points on every order and unlock Silver, Gold, and Platinum tiers.' },
-  { icon: Headphones,  color: '#0EA5E9', title: '24/7 support',      desc: 'Real humans, not bots. Reach us anytime in the app or via Telegram.' },
+const categories = [
+  { icon: Smartphone, name: "Mobile & Load" },
+  { icon: Laptop, name: "Gadgets" },
+  { icon: Shirt, name: "Fashion" },
+  { icon: Gamepad2, name: "Gaming" },
+  { icon: Home, name: "Home & Living" },
+  { icon: Sparkles, name: "Beauty" },
+  { icon: Headphones, name: "Audio" },
+  { icon: Utensils, name: "Food" },
+  { icon: Baby, name: "Kids" },
+  { icon: Gift, name: "Gifts" },
+  { icon: Heart, name: "Health" },
+  { icon: Package, name: "Bundles" },
 ];
 
-const FAQ = [
-  { q: 'What is XMARKET?',            a: 'XMARKET is a modern online marketplace where verified sellers list products and buyers shop with confidence. Everything runs through the Xwallet — one balance, one app.' },
-  { q: 'How do I create an account?', a: 'Tap the button at the top, download or install the app, and sign up with your email. Verification takes under a minute.' },
-  { q: 'What payment methods work?',  a: 'You can top up Xwallet via GCash, Maya, or bank transfer. All purchases are paid instantly from your wallet.' },
-  { q: 'Is my money safe?',           a: 'Yes. Xwallet is protected, transactions are logged, and every seller is identity-verified before they can list products.' },
-  { q: 'What if I receive a bad item?', a: 'Open a report from the app in under a minute. Our support team responds within hours and issues refunds directly to Xwallet.' },
+const hot = [
+  { icon: Zap, tag: "Instant", title: "Top-ups & load", text: "Recharge in seconds with Xwallet." },
+  { icon: Gamepad2, tag: "Hot", title: "Game credits", text: "Digital goods delivered right away." },
+  { icon: Percent, tag: "Promo", title: "Seasonal promos", text: "Vouchers and bundle discounts." },
+  { icon: Tag, tag: "New", title: "Fresh arrivals", text: "New products from verified sellers." },
 ];
 
-function useLiveStats() {
-  const [stats, setStats] = useState({ products: '—', orders: '—', users: '—' });
+const trust = [
+  { icon: ShieldCheck, title: "Buyer protection", text: "Refund support if something goes wrong." },
+  { icon: Wallet, title: "Secure Xwallet", text: "Pay and top up in one safe wallet." },
+  { icon: BadgeCheck, title: "Verified sellers", text: "Every store is checked before it sells." },
+  { icon: Truck, title: "Fast delivery", text: "Instant digital and quick shipped orders." },
+];
+
+const steps = [
+  { n: "1", title: "Create your store", text: "Sign up and set up your shop in minutes." },
+  { n: "2", title: "List your products", text: "Add products, bundles and promos easily." },
+  { n: "3", title: "Get paid", text: "Receive orders and earnings in your Xwallet." },
+];
+
+const faqs = [
+  ["What is XMARKET?", "XMARKET is an online marketplace where you can shop from verified sellers and pay with Xwallet."],
+  ["What is Xwallet?", "Xwallet is the built-in wallet for paying, topping up and receiving earnings on XMARKET."],
+  ["How do I start selling?", "Tap Start selling, create your store, add your products and you are ready to take orders."],
+  ["Is it safe to buy?", "Sellers are verified and refund support is available if an order has a problem."],
+  ["Can I install it on my phone?", "Yes. Use the Install app button to add XMARKET to your home screen."],
+];
+
+function Header() {
+  const [open, setOpen] = useState(false);
+  const go = () => setOpen(false);
+  return (
+    <header className="header">
+      <div className="wrap header-in">
+        <a className="logo" href="#top">
+          <span className="logo-mark"><ShoppingBag size={20} /></span>
+          <b>XMARKET</b>
+        </a>
+        <form className="search neu-in" action={APP_URL} method="get">
+          <Search size={18} />
+          <input name="q" placeholder="Search products, stores, top-ups" aria-label="Search" />
+        </form>
+        <nav className={"nav" + (open ? " open" : "")}>
+          <a href="#categories" onClick={go}>Categories</a>
+          <a href="#wallet" onClick={go}>Xwallet</a>
+          <a href="#sell" onClick={go}>Sell</a>
+          <a href="#faq" onClick={go}>Help</a>
+          <a className="btn btn-primary btn-sm" href={APP_URL} onClick={go}>Log in</a>
+        </nav>
+        <button className="menu neu-btn" onClick={() => setOpen(!open)} aria-label="Menu">
+          {open ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="hero" id="top">
+      <div className="float neu f1" data-speed="-0.12"><Wallet size={30} /></div>
+      <div className="float neu f2" data-speed="0.10"><ShoppingBag size={26} /></div>
+      <div className="float neu f3" data-speed="-0.2"><Coins size={28} /></div>
+      <div className="float neu f4" data-speed="0.16"><Gift size={24} /></div>
+      <div className="wrap hero-in">
+        <span className="pill neu-in"><Zap size={14} /> Shop smart. Pay with Xwallet.</span>
+        <h1>Your world of <span className="accent">great deals</span></h1>
+        <p className="lead">
+          Shop from verified sellers, pay with Xwallet and get instant delivery.
+          Or open your own store and start earning.
+        </p>
+        <div className="cta">
+          <a className="btn btn-primary" href={APP_URL}>Shop now <ArrowRight size={18} /></a>
+          <a className="btn btn-neu" href="#sell"><Store size={18} /> Start selling</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Trust() {
+  return (
+    <section className="wrap trust">
+      {trust.map((t) => (
+        <div className="neu card trust-card" key={t.title}>
+          <span className="ico neu-in"><t.icon size={22} /></span>
+          <div><h3>{t.title}</h3><p>{t.text}</p></div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function Categories() {
+  return (
+    <section className="wrap section" id="categories">
+      <div className="sec-head"><h2>Shop by category</h2><a href={APP_URL}>See all <ArrowRight size={16} /></a></div>
+      <div className="cat-grid">
+        {categories.map((c) => (
+          <a className="neu cat" href={APP_URL} key={c.name}>
+            <span className="ico neu-in"><c.icon size={22} /></span>
+            <span>{c.name}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Hot() {
+  return (
+    <section className="wrap section">
+      <div className="sec-head"><h2>Hot right now</h2><a href={APP_URL}>Browse <ArrowRight size={16} /></a></div>
+      <div className="hot-grid">
+        {hot.map((h) => (
+          <a className="neu card hot" href={APP_URL} key={h.title}>
+            <span className="badge">{h.tag}</span>
+            <span className="ico neu-in"><h.icon size={24} /></span>
+            <h3>{h.title}</h3>
+            <p>{h.text}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function WalletSection() {
+  return (
+    <section className="wrap section wallet" id="wallet">
+      <div className="float neu f5" data-speed="-0.1"><Coins size={26} /></div>
+      <div className="wallet-text">
+        <h2>Meet Xwallet</h2>
+        <p>One wallet for everything on XMARKET. Top up, pay at checkout, claim promos and receive your seller earnings.</p>
+        <ul className="checks">
+          <li><BadgeCheck size={18} /> Fast top-ups</li>
+          <li><BadgeCheck size={18} /> One-tap checkout</li>
+          <li><BadgeCheck size={18} /> Promos and vouchers</li>
+        </ul>
+        <a className="btn btn-primary" href={APP_URL}>Open Xwallet <ArrowRight size={18} /></a>
+      </div>
+      <div className="neu wallet-card">
+        <div className="wc-top"><Wallet size={22} /><b>Xwallet</b></div>
+        <div className="wc-bal">Balance</div>
+        <div className="wc-amt">₱ ••••••</div>
+        <div className="wc-row"><span className="chip">Top up</span><span className="chip">Pay</span><span className="chip">Send</span></div>
+      </div>
+    </section>
+  );
+}
+
+function Sell() {
+  return (
+    <section className="wrap section" id="sell">
+      <div className="neu sell">
+        <div className="float neu f6" data-speed="0.12"><Store size={26} /></div>
+        <h2>Sell on XMARKET</h2>
+        <p className="lead">Open your store, reach buyers and get paid straight to your Xwallet.</p>
+        <div className="steps">
+          {steps.map((s) => (
+            <div className="neu-in step" key={s.n}>
+              <span className="num">{s.n}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          ))}
+        </div>
+        <a className="btn btn-primary" href={APP_URL}>Open your store <ArrowRight size={18} /></a>
+      </div>
+    </section>
+  );
+}
+
+function Install() {
+  const [evt, setEvt] = useState(null);
+  const [done, setDone] = useState(false);
   useEffect(() => {
-    const SUPABASE_URL = 'https://dmdjytkuwfudkqepkxkl.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_1NOK3tZHHDzr8YBlBVmCuw_VvsKOFI7';
-    (async () => {
-      try {
-        const headers = {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-          Prefer: 'count=exact',
-        };
-        const [p, o, u] = await Promise.all([
-          fetch(`${SUPABASE_URL}/rest/v1/products?select=id&limit=1`, { headers }),
-          fetch(`${SUPABASE_URL}/rest/v1/orders?select=id&limit=1`,   { headers }),
-          fetch(`${SUPABASE_URL}/rest/v1/profiles?select=id&limit=1`, { headers }),
-        ]);
-        const getCount = (res) => {
-          const cr = res.headers.get('content-range');
-          return cr ? cr.split('/')[1] : '—';
-        };
-        setStats({ products: getCount(p), orders: getCount(o), users: getCount(u) });
-      } catch { /* keep placeholders */ }
-    })();
+    const h = (e) => { e.preventDefault(); setEvt(e); };
+    window.addEventListener("beforeinstallprompt", h);
+    window.addEventListener("appinstalled", () => setDone(true));
+    return () => window.removeEventListener("beforeinstallprompt", h);
   }, []);
-  return stats;
+  const install = async () => {
+    if (!evt) return;
+    evt.prompt();
+    await evt.userChoice;
+    setEvt(null);
+  };
+  return (
+    <section className="wrap section">
+      <div className="neu install">
+        <span className="ico neu-in big"><Smartphone size={30} /></span>
+        <div className="install-text">
+          <h2>Get the XMARKET app</h2>
+          <p>{done ? "Installed. Find XMARKET on your home screen." : "Install it free on your phone for faster shopping. No app store needed."}</p>
+        </div>
+        {evt && !done ? (
+          <button className="btn btn-primary" onClick={install}><Download size={18} /> Install app</button>
+        ) : (
+          <a className="btn btn-neu" href={APP_URL}>Open web app</a>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function Faq() {
+  return (
+    <section className="wrap section narrow" id="faq">
+      <h2 className="center">Frequently asked questions</h2>
+      {faqs.map(([q, a]) => (
+        <details className="neu faq" key={q}>
+          <summary>{q}<ChevronDown size={18} /></summary>
+          <p>{a}</p>
+        </details>
+      ))}
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="wrap foot-in">
+        <div>
+          <a className="logo" href="#top"><span className="logo-mark"><ShoppingBag size={18} /></span><b>XMARKET</b></a>
+          <p className="muted">Your world of great deals.</p>
+        </div>
+        <div className="foot-links">
+          <a href="#categories">Categories</a>
+          <a href="#wallet">Xwallet</a>
+          <a href="#sell">Sell</a>
+          <a href="#faq">Help</a>
+          <a href={APP_URL}>Open app</a>
+        </div>
+      </div>
+      <div className="wrap copy">© {new Date().getFullYear()} XMARKET. All rights reserved.</div>
+    </footer>
+  );
 }
 
 export default function App() {
-  const stats = useLiveStats();
-  const [openFaq, setOpenFaq] = useState(0);
-
+  useParallax();
   return (
     <>
-      {/* ---------- NAV (no CTA button) ---------- */}
-      <nav className="nav">
-        <div className="nav-inner">
-          <a href="#top" className="logo">
-            <div className="logo-mark">X</div>
-            <span>XMARKET</span>
-          </a>
-          <div className="nav-links">
-            <a href="#features" className="nav-link">Features</a>
-            <a href="#faq"      className="nav-link">FAQ</a>
-          </div>
-        </div>
-      </nav>
-
-      {/* ---------- HERO ---------- */}
-      <section className="hero" id="top">
-        <div className="container">
-          <div className="hero-inner">
-            <div className="hero-badge">
-              <Star size={13} fill="currentColor" /> #1 Marketplace in the Philippines
-            </div>
-            <h1>
-              Your world of<br />
-              <span className="accent">great deals.</span>
-            </h1>
-            <p className="hero-sub">
-              Buy from verified sellers, pay with Xwallet, and get same-day
-              delivery. All in one modern, easy-to-use app.
-            </p>
-            <div className="hero-cta">
-              <a href={APP_URL} className="btn btn-primary btn-lg">
-                Open XMARKET App <ArrowRight size={18} />
-              </a>
-            </div>
-            <div className="hero-note">Free to use · No credit card required</div>
-
-            {/* Neumorphic stats */}
-            <div className="stats">
-              <div className="stat">
-                <div className="stat-val">{stats.products}</div>
-                <div className="stat-lbl">Products listed</div>
-              </div>
-              <div className="stat">
-                <div className="stat-val">{stats.users}</div>
-                <div className="stat-lbl">Happy users</div>
-              </div>
-              <div className="stat">
-                <div className="stat-val">{stats.orders}</div>
-                <div className="stat-lbl">Orders placed</div>
-              </div>
-              <div className="stat">
-                <div className="stat-val">24/7</div>
-                <div className="stat-lbl">Support</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- FEATURES ---------- */}
-      <section id="features">
-        <div className="container">
-          <div className="section-head">
-            <h2>Everything you need to buy and sell.</h2>
-            <p>Built for speed, safety, and simplicity. No clutter, no gimmicks.</p>
-          </div>
-          <div className="features-grid">
-            {FEATURES.map((f) => {
-              const Icon = f.icon;
-              return (
-                <div key={f.title} className="feature">
-                  <div className="feature-icon" style={{ background: f.color }}>
-                    <Icon size={22} />
-                  </div>
-                  <h3>{f.title}</h3>
-                  <p>{f.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- TRUST ---------- */}
-      <section>
-        <div className="container">
-          <div className="section-head">
-            <h2>Trusted by buyers. Loved by sellers.</h2>
-            <p>Every transaction is protected from start to finish.</p>
-          </div>
-          <div className="trust">
-            <div className="trust-item">
-              <div className="icon"><ShieldCheck size={20} /></div>
-              <div>
-                <h4>Verified sellers</h4>
-                <p>Identity-checked before listing</p>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="icon"><Wallet size={20} /></div>
-              <div>
-                <h4>Secure payments</h4>
-                <p>Instant Xwallet transactions</p>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="icon"><CheckCircle2 size={20} /></div>
-              <div>
-                <h4>Buyer protection</h4>
-                <p>Refunds if items aren't as described</p>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="icon"><Headphones size={20} /></div>
-              <div>
-                <h4>Real support</h4>
-                <p>Humans, not bots, 24/7</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- FAQ ---------- */}
-      <section id="faq">
-        <div className="container">
-          <div className="section-head">
-            <h2>Frequently asked questions</h2>
-            <p>Everything you need to know about XMARKET.</p>
-          </div>
-          <div className="faq-list">
-            {FAQ.map((item, i) => (
-              <div key={item.q} className="faq-item">
-                <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>
-                  <span>{item.q}</span>
-                  <ChevronDown
-                    size={18}
-                    style={{
-                      transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)',
-                      transition: 'transform 0.2s',
-                      flexShrink: 0,
-                    }}
-                  />
-                </button>
-                {openFaq === i && <div className="faq-a">{item.a}</div>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- BIG CTA ---------- */}
-      <section style={{ padding: '32px 0 72px' }}>
-        <div className="big-cta">
-          <h2>Ready to start shopping?</h2>
-          <p>Join thousands of buyers and sellers already using XMARKET every day.</p>
-          <a href={APP_URL} className="btn btn-primary-inv btn-lg">
-            Open XMARKET App <ArrowRight size={18} />
-          </a>
-        </div>
-      </section>
-
-      {/* ---------- FOOTER (no Preview link) ---------- */}
-      <footer>
-        <div className="container">
-          <div className="footer-inner">
-            <div>
-              <div className="logo" style={{ marginBottom: 12 }}>
-                <div className="logo-mark">X</div>
-                <span>XMARKET</span>
-              </div>
-              <p style={{ maxWidth: 260, fontSize: 13 }}>
-                Your world of great deals. Shop from verified sellers, pay with Xwallet, get it fast.
-              </p>
-            </div>
-            <div className="footer-col">
-              <h5>Product</h5>
-              <a href="#features">Features</a>
-              <a href={APP_URL}>Open App</a>
-            </div>
-            <div className="footer-col">
-              <h5>Support</h5>
-              <a href="#faq">FAQ</a>
-              <a href={APP_URL}>Contact</a>
-            </div>
-            <div className="footer-col">
-              <h5>Legal</h5>
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            © {new Date().getFullYear()} XMARKET. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <Header />
+      <main>
+        <Hero />
+        <Trust />
+        <Categories />
+        <Hot />
+        <WalletSection />
+        <Sell />
+        <Install />
+        <Faq />
+      </main>
+      <Footer />
     </>
   );
 }
