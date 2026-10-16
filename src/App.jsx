@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
 import {
   Search, ShoppingBag, Wallet, ShieldCheck, Truck, BadgeCheck, Zap, Store,
-  Smartphone, Shirt, Gamepad2, Home, Sparkles, Headphones, Gift, ChevronDown,
-  Menu, X, ArrowRight, Download, Tag, Percent, Package, Laptop, Baby, Utensils,
-  Heart, Coins,
+  Smartphone, Gamepad2, Gift, ChevronDown, Menu, X, ArrowRight, Download,
+  Tag, Percent, Coins, ArrowUp, Bell, Package, CheckCircle2, Sparkles,
+  UserPlus, CreditCard,
 } from "lucide-react";
 import { useParallax } from "./useParallax.js";
 
 // EDIT THIS: the URL of your main XMARKET app
 const APP_URL = "https://xmarket.onrender.com";
 
-const categories = [
-  { icon: Smartphone, name: "Mobile & Load" },
-  { icon: Laptop, name: "Gadgets" },
-  { icon: Shirt, name: "Fashion" },
-  { icon: Gamepad2, name: "Gaming" },
-  { icon: Home, name: "Home & Living" },
-  { icon: Sparkles, name: "Beauty" },
-  { icon: Headphones, name: "Audio" },
-  { icon: Utensils, name: "Food" },
-  { icon: Baby, name: "Kids" },
-  { icon: Gift, name: "Gifts" },
-  { icon: Heart, name: "Health" },
-  { icon: Package, name: "Bundles" },
+// EDIT THESE with your real numbers
+const stats = [
+  { n: 3, suffix: "", label: "Steps to open a store" },
+  { n: 1, suffix: "", label: "Wallet for everything" },
+  { n: 24, suffix: "/7", label: "Web app always open" },
+  { n: 100, suffix: "%", label: "Verified sellers" },
+];
+
+const marquee = [
+  "Instant top-ups", "Game credits", "Verified sellers", "Secure Xwallet",
+  "Seasonal promos", "Fast delivery", "Open your store", "Install free",
 ];
 
 const hot = [
@@ -37,6 +35,12 @@ const trust = [
   { icon: Wallet, title: "Secure Xwallet", text: "Pay and top up in one safe wallet." },
   { icon: BadgeCheck, title: "Verified sellers", text: "Every store is checked before it sells." },
   { icon: Truck, title: "Fast delivery", text: "Instant digital and quick shipped orders." },
+];
+
+const buy = [
+  { icon: UserPlus, title: "Create an account", text: "Sign up free in under a minute." },
+  { icon: CreditCard, title: "Top up Xwallet", text: "Add funds and keep checkout one tap." },
+  { icon: Package, title: "Shop and receive", text: "Order from verified sellers and track it." },
 ];
 
 const steps = [
@@ -68,7 +72,7 @@ function Header() {
           <input name="q" placeholder="Search products, stores, top-ups" aria-label="Search" />
         </form>
         <nav className={"nav" + (open ? " open" : "")}>
-          <a href="#categories" onClick={go}>Categories</a>
+          <a href="#features" onClick={go}>Features</a>
           <a href="#wallet" onClick={go}>Xwallet</a>
           <a href="#sell" onClick={go}>Sell</a>
           <a href="#faq" onClick={go}>Help</a>
@@ -78,6 +82,7 @@ function Header() {
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
+      <div id="progress" className="progress" />
     </header>
   );
 }
@@ -85,31 +90,83 @@ function Header() {
 function Hero() {
   return (
     <section className="hero" id="top">
-      <div className="float neu f1" data-speed="-0.12"><Wallet size={30} /></div>
-      <div className="float neu f2" data-speed="0.10"><ShoppingBag size={26} /></div>
-      <div className="float neu f3" data-speed="-0.2"><Coins size={28} /></div>
-      <div className="float neu f4" data-speed="0.16"><Gift size={24} /></div>
-      <div className="wrap hero-in">
-        <span className="pill neu-in"><Zap size={14} /> Shop smart. Pay with Xwallet.</span>
-        <h1>Your world of <span className="accent">great deals</span></h1>
-        <p className="lead">
-          Shop from verified sellers, pay with Xwallet and get instant delivery.
-          Or open your own store and start earning.
-        </p>
-        <div className="cta">
-          <a className="btn btn-primary" href={APP_URL}>Shop now <ArrowRight size={18} /></a>
-          <a className="btn btn-neu" href="#sell"><Store size={18} /> Start selling</a>
+      <div className="blob b1" data-speed="-0.3" data-origin="top" />
+      <div className="blob b2" data-speed="-0.2" data-origin="top" />
+      <div className="float neu f1" style={{ "--d": 60 }} data-speed="-0.16" data-origin="top" data-rotate="-0.03"><Wallet size={28} /></div>
+      <div className="float neu f2" style={{ "--d": -50 }} data-speed="0.12" data-origin="top"><ShoppingBag size={24} /></div>
+      <div className="float neu f3" style={{ "--d": 40 }} data-speed="-0.24" data-origin="top"><Coins size={26} /></div>
+      <div className="float neu f4" style={{ "--d": -70 }} data-speed="0.18" data-origin="top" data-rotate="0.04"><Gift size={22} /></div>
+
+      <div className="wrap hero-grid">
+        <div className="hero-text" data-speed="-0.08" data-origin="top">
+          <span className="pill neu-in"><Zap size={14} /> Shop smart. Pay with Xwallet.</span>
+          <h1>Your world of <span className="accent">great deals</span></h1>
+          <p className="lead">
+            Shop from verified sellers, pay with Xwallet and get instant delivery.
+            Or open your own store and start earning.
+          </p>
+          <div className="cta">
+            <a className="btn btn-primary" href={APP_URL}>Shop now <ArrowRight size={18} /></a>
+            <a className="btn btn-neu" href="#sell"><Store size={18} /> Start selling</a>
+          </div>
+          <div className="mini-trust">
+            <span><ShieldCheck size={16} /> Buyer protection</span>
+            <span><BadgeCheck size={16} /> Verified sellers</span>
+          </div>
+        </div>
+
+        <div className="phone-wrap" data-speed="0.06" data-origin="top">
+          <div className="glow" data-speed="-0.1" data-origin="top" />
+          <div className="phone neu" data-tilt>
+            <div className="notch" />
+            <div className="screen">
+              <div className="s-top"><ShoppingBag size={15} /><b>XMARKET</b><Bell size={15} /></div>
+              <div className="s-search neu-in"><Search size={13} /> Search deals</div>
+              <div className="s-card">
+                <span>Xwallet</span>
+                <b>₱ ••••••</b>
+                <div className="s-chips"><i>Top up</i><i>Pay</i></div>
+              </div>
+              <div className="s-grid">
+                <div className="neu-in"><Zap size={18} /><small>Load</small></div>
+                <div className="neu-in"><Gamepad2 size={18} /><small>Games</small></div>
+                <div className="neu-in"><Gift size={18} /><small>Gifts</small></div>
+                <div className="neu-in"><Tag size={18} /><small>Promos</small></div>
+              </div>
+            </div>
+          </div>
+          <div className="notif n1 neu" data-speed="-0.14" data-origin="top">
+            <CheckCircle2 size={20} /><div><b>Top-up successful</b><small>Added to Xwallet</small></div>
+          </div>
+          <div className="notif n2 neu" data-speed="0.1" data-origin="top">
+            <Truck size={20} /><div><b>Order on the way</b><small>Track in the app</small></div>
+          </div>
+          <div className="notif n3 neu" data-speed="-0.2" data-origin="top">
+            <Percent size={20} /><div><b>Promo unlocked</b><small>Voucher ready</small></div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
+function Marquee() {
+  return (
+    <div className="marquee" aria-hidden="true">
+      <div className="track">
+        {[...marquee, ...marquee].map((t, i) => (
+          <span key={i}><Sparkles size={16} />{t}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Trust() {
   return (
     <section className="wrap trust">
-      {trust.map((t) => (
-        <div className="neu card trust-card" key={t.title}>
+      {trust.map((t, i) => (
+        <div className="neu card trust-card" key={t.title} data-reveal style={{ "--i": i }}>
           <span className="ico neu-in"><t.icon size={22} /></span>
           <div><h3>{t.title}</h3><p>{t.text}</p></div>
         </div>
@@ -118,15 +175,23 @@ function Trust() {
   );
 }
 
-function Categories() {
+function Features() {
   return (
-    <section className="wrap section" id="categories">
-      <div className="sec-head"><h2>Shop by category</h2><a href={APP_URL}>See all <ArrowRight size={16} /></a></div>
-      <div className="cat-grid">
-        {categories.map((c) => (
-          <a className="neu cat" href={APP_URL} key={c.name}>
-            <span className="ico neu-in"><c.icon size={22} /></span>
-            <span>{c.name}</span>
+    <section className="wrap section" id="features">
+      <div className="blob b3" data-speed="0.2" />
+      <div className="sec-head center-head" data-reveal>
+        <span className="kicker">Features</span>
+        <h2>Everything you need, in one app</h2>
+        <p>Shop, top up, pay and sell without switching between apps.</p>
+      </div>
+      <div className="hot-grid">
+        {hot.map((h, i) => (
+          <a className="neu card hot" href={APP_URL} key={h.title} data-reveal style={{ "--i": i }}>
+            <span className="badge">{h.tag}</span>
+            <span className="ico neu-in"><h.icon size={24} /></span>
+            <h3>{h.title}</h3>
+            <p>{h.text}</p>
+            <span className="more">Explore <ArrowRight size={14} /></span>
           </a>
         ))}
       </div>
@@ -134,18 +199,36 @@ function Categories() {
   );
 }
 
-function Hot() {
+function Stats() {
   return (
     <section className="wrap section">
-      <div className="sec-head"><h2>Hot right now</h2><a href={APP_URL}>Browse <ArrowRight size={16} /></a></div>
-      <div className="hot-grid">
-        {hot.map((h) => (
-          <a className="neu card hot" href={APP_URL} key={h.title}>
-            <span className="badge">{h.tag}</span>
-            <span className="ico neu-in"><h.icon size={24} /></span>
-            <h3>{h.title}</h3>
-            <p>{h.text}</p>
-          </a>
+      <div className="neu stats" data-reveal>
+        {stats.map((s) => (
+          <div className="stat" key={s.label}>
+            <b data-count={s.n} data-suffix={s.suffix}>{s.n}{s.suffix}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function HowBuy() {
+  return (
+    <section className="wrap section">
+      <div className="sec-head center-head" data-reveal>
+        <span className="kicker">For buyers</span>
+        <h2>Start shopping in 3 easy steps</h2>
+      </div>
+      <div className="how">
+        <div className="how-line" />
+        {buy.map((b, i) => (
+          <div className="how-step" key={b.title} data-reveal style={{ "--i": i }}>
+            <span className="how-ico neu"><b.icon size={26} /></span>
+            <h3>{b.title}</h3>
+            <p>{b.text}</p>
+          </div>
         ))}
       </div>
     </section>
@@ -155,22 +238,27 @@ function Hot() {
 function WalletSection() {
   return (
     <section className="wrap section wallet" id="wallet">
-      <div className="float neu f5" data-speed="-0.1"><Coins size={26} /></div>
-      <div className="wallet-text">
-        <h2>Meet Xwallet</h2>
-        <p>One wallet for everything on XMARKET. Top up, pay at checkout, claim promos and receive your seller earnings.</p>
+      <div className="float neu f5" data-speed="-0.14"><Coins size={26} /></div>
+      <div className="wallet-text" data-reveal>
+        <span className="kicker">Xwallet</span>
+        <h2>One wallet for everything</h2>
+        <p>Top up, pay at checkout, claim promos and receive your seller earnings, all in one place.</p>
         <ul className="checks">
           <li><BadgeCheck size={18} /> Fast top-ups</li>
           <li><BadgeCheck size={18} /> One-tap checkout</li>
           <li><BadgeCheck size={18} /> Promos and vouchers</li>
+          <li><BadgeCheck size={18} /> Seller earnings in one balance</li>
         </ul>
         <a className="btn btn-primary" href={APP_URL}>Open Xwallet <ArrowRight size={18} /></a>
       </div>
-      <div className="neu wallet-card">
-        <div className="wc-top"><Wallet size={22} /><b>Xwallet</b></div>
-        <div className="wc-bal">Balance</div>
-        <div className="wc-amt">₱ ••••••</div>
-        <div className="wc-row"><span className="chip">Top up</span><span className="chip">Pay</span><span className="chip">Send</span></div>
+      <div className="wallet-visual" data-reveal>
+        <div className="neu wallet-card" data-tilt>
+          <div className="wc-top"><Wallet size={22} /><b>Xwallet</b></div>
+          <div className="wc-bal">Balance</div>
+          <div className="wc-amt">₱ ••••••</div>
+          <div className="wc-row"><span className="chip">Top up</span><span className="chip">Pay</span><span className="chip">Send</span></div>
+        </div>
+        <div className="float neu f9" data-speed="0.18" data-rotate="0.05"><Gift size={22} /></div>
       </div>
     </section>
   );
@@ -179,8 +267,9 @@ function WalletSection() {
 function Sell() {
   return (
     <section className="wrap section" id="sell">
-      <div className="neu sell">
-        <div className="float neu f6" data-speed="0.12"><Store size={26} /></div>
+      <div className="neu sell" data-reveal>
+        <div className="float neu f6" data-speed="0.14" data-rotate="0.04"><Store size={26} /></div>
+        <span className="kicker">For sellers</span>
         <h2>Sell on XMARKET</h2>
         <p className="lead">Open your store, reach buyers and get paid straight to your Xwallet.</p>
         <div className="steps">
@@ -203,9 +292,13 @@ function Install() {
   const [done, setDone] = useState(false);
   useEffect(() => {
     const h = (e) => { e.preventDefault(); setEvt(e); };
+    const d = () => setDone(true);
     window.addEventListener("beforeinstallprompt", h);
-    window.addEventListener("appinstalled", () => setDone(true));
-    return () => window.removeEventListener("beforeinstallprompt", h);
+    window.addEventListener("appinstalled", d);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", h);
+      window.removeEventListener("appinstalled", d);
+    };
   }, []);
   const install = async () => {
     if (!evt) return;
@@ -215,7 +308,7 @@ function Install() {
   };
   return (
     <section className="wrap section">
-      <div className="neu install">
+      <div className="neu install" data-reveal>
         <span className="ico neu-in big"><Smartphone size={30} /></span>
         <div className="install-text">
           <h2>Get the XMARKET app</h2>
@@ -234,13 +327,30 @@ function Install() {
 function Faq() {
   return (
     <section className="wrap section narrow" id="faq">
-      <h2 className="center">Frequently asked questions</h2>
-      {faqs.map(([q, a]) => (
-        <details className="neu faq" key={q}>
+      <h2 className="center" data-reveal>Frequently asked questions</h2>
+      {faqs.map(([q, a], i) => (
+        <details className="neu faq" key={q} data-reveal style={{ "--i": i }}>
           <summary>{q}<ChevronDown size={18} /></summary>
           <p>{a}</p>
         </details>
       ))}
+    </section>
+  );
+}
+
+function FinalCta() {
+  return (
+    <section className="wrap section">
+      <div className="neu cta-band" data-reveal>
+        <div className="float neu f7" data-speed="0.16" data-rotate="0.05"><Gift size={24} /></div>
+        <div className="float neu f8" data-speed="-0.14"><Coins size={24} /></div>
+        <h2>Ready to find your next great deal?</h2>
+        <p className="lead">Join XMARKET today. Shop, top up and sell from one place.</p>
+        <div className="cta">
+          <a className="btn btn-primary" href={APP_URL}>Get started <ArrowRight size={18} /></a>
+          <a className="btn btn-neu" href="#sell"><Store size={18} /> Become a seller</a>
+        </div>
+      </div>
     </section>
   );
 }
@@ -254,7 +364,7 @@ function Footer() {
           <p className="muted">Your world of great deals.</p>
         </div>
         <div className="foot-links">
-          <a href="#categories">Categories</a>
+          <a href="#features">Features</a>
           <a href="#wallet">Xwallet</a>
           <a href="#sell">Sell</a>
           <a href="#faq">Help</a>
@@ -273,15 +383,26 @@ export default function App() {
       <Header />
       <main>
         <Hero />
+        <Marquee />
         <Trust />
-        <Categories />
-        <Hot />
+        <Features />
+        <Stats />
+        <HowBuy />
         <WalletSection />
         <Sell />
         <Install />
         <Faq />
+        <FinalCta />
       </main>
       <Footer />
+      <button
+        id="totop"
+        className="totop neu-btn"
+        aria-label="Back to top"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
+        <ArrowUp size={20} />
+      </button>
     </>
   );
 }
