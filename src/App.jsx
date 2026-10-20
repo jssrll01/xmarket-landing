@@ -42,11 +42,6 @@ const buy = [
   { icon: Package, title: "Shop and receive", text: "Order from verified sellers and track it." },
 ];
 
-const steps = [
-  { n: "1", title: "Create your store", text: "Sign up and set up your shop in minutes." },
-  { n: "2", title: "List your products", text: "Add products, bundles and promos easily." },
-  { n: "3", title: "Get paid", text: "Receive orders and earnings in your Xwallet." },
-];
 
 const faqs = [
   ["What is XMARKET?", "XMARKET is an online marketplace where you can shop from verified sellers and pay with Xwallet."],
@@ -123,9 +118,8 @@ function Hero() {
                 <div className="s-chips"><i>Top up</i><i>Pay</i></div>
               </div>
               <div className="s-grid">
-                <div className="neu-in"><Zap size={18} /><small>Load</small></div>
+                <div className="neu-in"><Zap size={18} /><small>Send money</small></div>
                 <div className="neu-in"><Gamepad2 size={18} /><small>Games</small></div>
-                <div className="neu-in"><Gift size={18} /><small>Gifts</small></div>
                 <div className="neu-in"><Tag size={18} /><small>Promos</small></div>
               </div>
             </div>
