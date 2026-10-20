@@ -1,4 +1,4 @@
-const CACHE = 'xmarket-landing-v1';
+const CACHE = 'xmarket-landing-v1-u1792484643';
 const CORE = ['/', '/index.html', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {

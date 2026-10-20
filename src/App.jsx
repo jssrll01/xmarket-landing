@@ -8,11 +8,10 @@ import {
 import { useParallax } from "./useParallax.js";
 
 // EDIT THIS: the URL of your main XMARKET app
-const APP_URL = "https://xmarket.onrender.com";
+const APP_URL = "https://xmarket-app.onrender.com";
 
 // EDIT THESE with your real numbers
 const stats = [
-  { n: 3, suffix: "", label: "Steps to open a store" },
   { n: 1, suffix: "", label: "Wallet for everything" },
   { n: 24, suffix: "/7", label: "Web app always open" },
   { n: 100, suffix: "%", label: "Verified sellers" },
@@ -20,11 +19,11 @@ const stats = [
 
 const marquee = [
   "Instant top-ups", "Game credits", "Verified sellers", "Secure Xwallet",
-  "Seasonal promos", "Fast delivery", "Open your store", "Install free",
+  "Seasonal promos", "Fast delivery", "Install free",
 ];
 
 const hot = [
-  { icon: Zap, tag: "Instant", title: "Top-ups & load", text: "Recharge in seconds with Xwallet." },
+  { icon: Zap, tag: "Instant", title: "Top-ups & send money", text: "Recharge in seconds with Xwallet." },
   { icon: Gamepad2, tag: "Hot", title: "Game credits", text: "Digital goods delivered right away." },
   { icon: Percent, tag: "Promo", title: "Seasonal promos", text: "Vouchers and bundle discounts." },
   { icon: Tag, tag: "New", title: "Fresh arrivals", text: "New products from verified sellers." },
@@ -52,7 +51,6 @@ const steps = [
 const faqs = [
   ["What is XMARKET?", "XMARKET is an online marketplace where you can shop from verified sellers and pay with Xwallet."],
   ["What is Xwallet?", "Xwallet is the built-in wallet for paying, topping up and receiving earnings on XMARKET."],
-  ["How do I start selling?", "Tap Start selling, create your store, add your products and you are ready to take orders."],
   ["Is it safe to buy?", "Sellers are verified and refund support is available if an order has a problem."],
   ["Can I install it on my phone?", "Yes. Use the Install app button to add XMARKET to your home screen."],
 ];
@@ -74,7 +72,6 @@ function Header() {
         <nav className={"nav" + (open ? " open" : "")}>
           <a href="#features" onClick={go}>Features</a>
           <a href="#wallet" onClick={go}>Xwallet</a>
-          <a href="#sell" onClick={go}>Sell</a>
           <a href="#faq" onClick={go}>Help</a>
           <a className="btn btn-primary btn-sm" href={APP_URL} onClick={go}>Log in</a>
         </nav>
@@ -103,11 +100,9 @@ function Hero() {
           <h1>Your world of <span className="accent">great deals</span></h1>
           <p className="lead">
             Shop from verified sellers, pay with Xwallet and get instant delivery.
-            Or open your own store and start earning.
           </p>
           <div className="cta">
             <a className="btn btn-primary" href={APP_URL}>Shop now <ArrowRight size={18} /></a>
-            <a className="btn btn-neu" href="#sell"><Store size={18} /> Start selling</a>
           </div>
           <div className="mini-trust">
             <span><ShieldCheck size={16} /> Buyer protection</span>
@@ -182,7 +177,7 @@ function Features() {
       <div className="sec-head center-head" data-reveal>
         <span className="kicker">Features</span>
         <h2>Everything you need, in one app</h2>
-        <p>Shop, top up, pay and sell without switching between apps.</p>
+        <p>Shop, top up and pay without switching between apps.</p>
       </div>
       <div className="hot-grid">
         {hot.map((h, i) => (
@@ -242,12 +237,11 @@ function WalletSection() {
       <div className="wallet-text" data-reveal>
         <span className="kicker">Xwallet</span>
         <h2>One wallet for everything</h2>
-        <p>Top up, pay at checkout, claim promos and receive your seller earnings, all in one place.</p>
+        <p>Top up, pay at checkout and claim promos, all in one place.</p>
         <ul className="checks">
           <li><BadgeCheck size={18} /> Fast top-ups</li>
           <li><BadgeCheck size={18} /> One-tap checkout</li>
           <li><BadgeCheck size={18} /> Promos and vouchers</li>
-          <li><BadgeCheck size={18} /> Seller earnings in one balance</li>
         </ul>
         <a className="btn btn-primary" href={APP_URL}>Open Xwallet <ArrowRight size={18} /></a>
       </div>
@@ -259,29 +253,6 @@ function WalletSection() {
           <div className="wc-row"><span className="chip">Top up</span><span className="chip">Pay</span><span className="chip">Send</span></div>
         </div>
         <div className="float neu f9" data-speed="0.18" data-rotate="0.05"><Gift size={22} /></div>
-      </div>
-    </section>
-  );
-}
-
-function Sell() {
-  return (
-    <section className="wrap section" id="sell">
-      <div className="neu sell" data-reveal>
-        <div className="float neu f6" data-speed="0.14" data-rotate="0.04"><Store size={26} /></div>
-        <span className="kicker">For sellers</span>
-        <h2>Sell on XMARKET</h2>
-        <p className="lead">Open your store, reach buyers and get paid straight to your Xwallet.</p>
-        <div className="steps">
-          {steps.map((s) => (
-            <div className="neu-in step" key={s.n}>
-              <span className="num">{s.n}</span>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-            </div>
-          ))}
-        </div>
-        <a className="btn btn-primary" href={APP_URL}>Open your store <ArrowRight size={18} /></a>
       </div>
     </section>
   );
@@ -345,10 +316,9 @@ function FinalCta() {
         <div className="float neu f7" data-speed="0.16" data-rotate="0.05"><Gift size={24} /></div>
         <div className="float neu f8" data-speed="-0.14"><Coins size={24} /></div>
         <h2>Ready to find your next great deal?</h2>
-        <p className="lead">Join XMARKET today. Shop, top up and sell from one place.</p>
+        <p className="lead">Join XMARKET today. Shop, top up and send money from one place.</p>
         <div className="cta">
           <a className="btn btn-primary" href={APP_URL}>Get started <ArrowRight size={18} /></a>
-          <a className="btn btn-neu" href="#sell"><Store size={18} /> Become a seller</a>
         </div>
       </div>
     </section>
@@ -366,7 +336,6 @@ function Footer() {
         <div className="foot-links">
           <a href="#features">Features</a>
           <a href="#wallet">Xwallet</a>
-          <a href="#sell">Sell</a>
           <a href="#faq">Help</a>
           <a href={APP_URL}>Open app</a>
         </div>
@@ -389,7 +358,6 @@ export default function App() {
         <Stats />
         <HowBuy />
         <WalletSection />
-        <Sell />
         <Install />
         <Faq />
         <FinalCta />
